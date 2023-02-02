@@ -143,6 +143,7 @@ function getValidPlates(arr) {
             while (arr.length > 0 && processing < QUEUE_SIZE) {
                 processing++;
                 startedCallback = true;
+                process.setMaxListeners(QUEUE_SIZE);
                 getValidPlate(arr.pop())
                     .then((val) => {
                         processing--;

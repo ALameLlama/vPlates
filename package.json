@@ -1,14 +1,15 @@
 {
   "name": "@llamaduck/vplates",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "a little program to check for license plate availability for plates in Victoria, Australia! (now with puppeteer)",
   "main": "index.js",
-  "bundleDependencies": false,
+  "bundleDependencies": [],
   "dependencies": {
-    "yargs": "^16.2.0",
+    "@llamaduck/vplates": "^1.0.1",
     "puppeteer": "^19.6.3",
     "puppeteer-extra": "^3.3.4",
-    "puppeteer-extra-plugin-stealth": "^2.11.1"
+    "puppeteer-extra-plugin-stealth": "^2.11.1",
+    "yargs": "^16.2.0"
   },
   "repository": {
     "type": "git",
