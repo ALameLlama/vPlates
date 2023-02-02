@@ -108,18 +108,29 @@ function getValidPlate(line) {
             res(result);
         });
     }
-    return puppeteer.launch({ headless: true, executablePath: executablePath() }).then(async browser => { 
-        const page = await browser.newPage() 
-        await page.goto(`https://vplates.com.au/vplatesapi/checkcombo?vehicleType=car&combination=${line}&_=${Date.now()}`);
-        const html = await page.evaluate(() => document.body.innerHTML);
-        const json = JSON.parse(html.match(/<pre.*>([\s\S]*)<\/pre>/)[1]);
-        if (json.success) {
-            result.available = true;
-        } else {
-            result.error = "Failed to get JSON from website";
-        }
-        await browser.close() 
-        return result;
+    return puppeteer.launch({ args: ['--single-process'], headless: true, executablePath: executablePath() }).then(async browser => {
+        try {
+            const page = await browser.newPage() 
+            await page.goto(`https://vplates.com.au/vplatesapi/checkcombo?vehicleType=car&combination=${line}&_=${Date.now()}`);
+            const html = await page.evaluate(() => document.body.innerHTML);
+            const match = html.match(/<pre.*>([\s\S]*)<\/pre>/);
+            if (!match) {
+                result.error = "No match found for <pre> tag in HTML";
+                return result;
+            }
+            
+            const json = JSON.parse(match[1]);
+            if (json.success) {
+                result.available = true;
+            } else {
+                result.error = "Failed to get JSON from website";
+            }
+        } catch (e) {
+            console.log(e);
+        } finally {
+            await browser.close() 
+            return result;
+      }
     })
     .catch(error => {
         result.error = error;
@@ -133,7 +144,7 @@ function getValidPlates(arr) {
     let totalItems = arr.length;
     console.log(`Getting available plates of ${totalItems} items`);
     return new Promise((res, rej) => {
-        const QUEUE_SIZE = argv.queueSize ?? 200;
+        const QUEUE_SIZE = argv.queueSize ?? 50;
         let processing = 0;
         let valids = [];
         let invalids = [];
@@ -143,7 +154,7 @@ function getValidPlates(arr) {
             while (arr.length > 0 && processing < QUEUE_SIZE) {
                 processing++;
                 startedCallback = true;
-                process.setMaxListeners(QUEUE_SIZE);
+                process.setMaxListeners(QUEUE_SIZE * 2);
                 getValidPlate(arr.pop())
                     .then((val) => {
                         processing--;
