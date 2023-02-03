@@ -32,7 +32,7 @@ const argv = yargs(hideBin(process.argv))
     .option('queueSize', {
         describe: 'how many requests to send at once (more = faster but more intensive)',
         type: 'number',
-        default: 200
+        default: 5
     })
     .option('count', {
         describe: '(combo mode) how many characters for generating combinations',
@@ -108,14 +108,30 @@ function getValidPlate(line) {
             res(result);
         });
     }
-    return puppeteer.launch({ args: ['--single-process'], headless: true, executablePath: executablePath() }).then(async browser => {
+    return puppeteer.launch({ args: [
+        '--disable-gpu',
+        '--disable-dev-shm-usage',
+        '--disable-setuid-sandbox',
+        '--no-first-run',
+        '--no-sandbox',
+        '--single-process',
+    ], headless: true, executablePath: executablePath() }).then(async browser => {
         try {
             const page = await browser.newPage() 
-            await page.goto(`https://vplates.com.au/vplatesapi/checkcombo?vehicleType=car&combination=${line}&_=${Date.now()}`);
+            await page.goto(`https://vplates.com.au/vplatesapi/checkcombo?vehicleType=car&combination=${line}&_=${Date.now()}`, {timeout: 0});
             const html = await page.evaluate(() => document.body.innerHTML);
+
+            const timeout = html.match('banned you temporarily from accessing this website');
+
+            if (timeout) {
+                result.error = "Timed out";
+                return result;
+            };
+
             const match = html.match(/<pre.*>([\s\S]*)<\/pre>/);
+            
             if (!match) {
-                result.error = "No match found for <pre> tag in HTML";
+                result.error = "Unexpeted HTML";
                 return result;
             }
             
@@ -144,7 +160,7 @@ function getValidPlates(arr) {
     let totalItems = arr.length;
     console.log(`Getting available plates of ${totalItems} items`);
     return new Promise((res, rej) => {
-        const QUEUE_SIZE = argv.queueSize ?? 50;
+        const QUEUE_SIZE = argv.queueSize ?? 5;
         let processing = 0;
         let valids = [];
         let invalids = [];
@@ -154,7 +170,7 @@ function getValidPlates(arr) {
             while (arr.length > 0 && processing < QUEUE_SIZE) {
                 processing++;
                 startedCallback = true;
-                process.setMaxListeners(QUEUE_SIZE * 2);
+                process.setMaxListeners(0);
                 getValidPlate(arr.pop())
                     .then((val) => {
                         processing--;

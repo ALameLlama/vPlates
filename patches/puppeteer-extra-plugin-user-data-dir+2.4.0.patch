@@ -1,0 +1,23 @@
+diff --git a/node_modules/puppeteer-extra-plugin-user-data-dir/LICENSE b/node_modules/puppeteer-extra-plugin-user-data-dir/LICENSE
+old mode 100644
+new mode 100755
+diff --git a/node_modules/puppeteer-extra-plugin-user-data-dir/index.js b/node_modules/puppeteer-extra-plugin-user-data-dir/index.js
+old mode 100644
+new mode 100755
+index a3711d8..cfc7ebe
+--- a/node_modules/puppeteer-extra-plugin-user-data-dir/index.js
++++ b/node_modules/puppeteer-extra-plugin-user-data-dir/index.js
+@@ -66,6 +66,10 @@ class Plugin extends PuppeteerExtraPlugin {
+   deleteUserDataDir() {
+     debug('removeUserDataDir', this._userDataDir)
+ 
++    if (!this._userDataDir) {
++      return
++    }
++
+     // We're using rimraf here because it throw errors and don't seem to freeze the process
+     // If ressources busy or locked by chrome try again 4 times, then give up. overall a timout of 400ms
+     rimraf(
+diff --git a/node_modules/puppeteer-extra-plugin-user-data-dir/readme.md b/node_modules/puppeteer-extra-plugin-user-data-dir/readme.md
+old mode 100644
+new mode 100755
