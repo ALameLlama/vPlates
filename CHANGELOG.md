@@ -20,13 +20,19 @@ straightforward as possible.
  
 ### Fixed
  
-## [1.0.1] - 2023-02-02
+## [1.0.2] - 2023-02-03
  
 ### Added
-   
-### Changed
- 
+    - [Dependancy Issue](https://www.npmjs.com/package/@llamaduck/vplates/v/1.0.2)
+  Added [patch](https://github.com/puppeteer/puppeteer/issues/1837) to fix dependancy issue
+
 ### Fixed
+ 
+- [Fork Bombing](https://www.npmjs.com/package/@llamaduck/vplates/v/1.0.2)
+  Fix browser not closing and fork bombing the PC
+
+## [1.0.1] - 2023-02-02
+ ### Fixed
  
 - [MaxListenersExceededWarning](https://www.npmjs.com/package/@llamaduck/vplates/v/1.0.1)
   Fix MaxListenersExceededWarning
