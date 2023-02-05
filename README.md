@@ -3,9 +3,14 @@
 Originally:
 https://www.npmjs.com/package/vplates/v/0.1.7
 
-This was depricated and no longer worked and I can't find a repo to PR too.
+This was depricated and no longer worked with node fetch and I can't find a repo to PR too.
 
-a little program to check for license plate availability for plates in Victoria, Australia! (now with puppeteer)
+A little program to check for license plate availability for plates in Victoria, Australia! (now with puppeteer)
+
+You'll need to make sure your system has every thing it needs to run puppeteer (chromium browser)
+e.g
+Ubuntu:
+sudo apt update && sudo apt install -y gconf-service libgbm-dev libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
 
 ## basic usage
 running the program with a single argument will check for a single plate's availability
