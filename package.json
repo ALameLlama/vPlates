@@ -2,8 +2,24 @@
   "name": "@llamaduck/vplates",
   "version": "1.0.2",
   "description": "a little program to check for license plate availability for plates in Victoria, Australia! (now with puppeteer)",
+  "keywords": [],
+  "homepage": "https://github.com/LlamaDuckGoose/vPlates#readme",
+  "bugs": {
+    "url": "https://github.com/LlamaDuckGoose/vPlates/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LlamaDuckGoose/vPlates.git"
+  },
+  "license": "ISC",
+  "author": "",
   "main": "index.js",
-  "bundleDependencies": [],
+  "bin": {
+    "vplates": "index.js"
+  },
+  "scripts": {
+    "postinstall": "patch-package"
+  },
   "dependencies": {
     "patch-package": "^6.5.1",
     "puppeteer": "^19.6.3",
@@ -11,21 +27,8 @@
     "puppeteer-extra-plugin-stealth": "^2.11.1",
     "yargs": "^16.2.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/LlamaDuckGoose/vPlates.git"
-  },
-  "bin": {
-    "vplates": "index.js"
-  },
-  "scripts": {
-    "postinstall": "patch-package"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/LlamaDuckGoose/vPlates/issues"
-  },
-  "homepage": "https://github.com/LlamaDuckGoose/vPlates#readme"
+  "bundleDependencies": [],
+  "publishConfig": {
+    "@llamaduck:registry": "https://npm.pkg.github.com"
+  }
 }
